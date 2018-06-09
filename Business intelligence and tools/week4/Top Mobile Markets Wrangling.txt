@@ -1,0 +1,42 @@
+[
+  {
+    "op": "core/column-removal",
+    "description": "列を削除 [Column 1]",
+    "columnName": "Column 1",
+    "ignoreError": false
+  },
+  {
+    "op": "core/text-transform",
+    "description": "この後の文字を削除: /\\.\\d+/ [Mobile subscriptions] (#### 行)",
+    "engineConfig": {
+      "mode": "row-based",
+      "facets": []
+    },
+    "columnName": "Mobile subscriptions",
+    "expression": "grel:trim(partition(value, /\\.\\d+/)[0] + partition(value, /\\.\\d+/)[1])",
+    "onError": "keep-original",
+    "repeat": false,
+    "repeatCount": 10
+  },
+  {
+    "op": "core/mass-edit",
+    "description": "セルを編集 [% of population of 3g/4G users] (#### 行)",
+    "engineConfig": {
+      "mode": "row-based",
+      "facets": []
+    },
+    "columnName": "% of population of 3g/4G users",
+    "expression": "value",
+    "edits": [
+      {
+        "fromBlank": false,
+        "fromError": false,
+        "from": [
+          "N/A"
+        ],
+        "to": "",
+        "type": "text"
+      }
+    ]
+  }
+]
